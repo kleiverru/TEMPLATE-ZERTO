@@ -1,0 +1,1808 @@
+{
+    "zabbix_export": {
+        "version": "7.4",
+        "template_groups": [
+            {
+                "uuid": "129880d0a5364da59bc1275d48a79809",
+                "name": "Templates/Storage"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "002aefc300a94dc68b763d8adf790373",
+                "template": "Zerto Virtual Manager",
+                "name": "Zerto Virtual Manager",
+                "description": "Monitoreo de Zerto Virtual Manager vía colector Python con control de duplicidad por sitio.",
+                "groups": [
+                    {
+                        "name": "Templates/Storage"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "214837d698c740429e9fdbed12532562",
+                        "name": "Zerto: Alertas activas - Error",
+                        "type": "TRAP",
+                        "key": "zerto.alerts.error_count",
+                        "history": "7d",
+                        "trends": "90d"
+                    },
+                    {
+                        "uuid": "07e4df892b27496ca3de3d9742adbc7a",
+                        "name": "Zerto: Alertas nuevas (log)",
+                        "type": "TRAP",
+                        "key": "zerto.alerts.log",
+                        "history": "30d",
+                        "value_type": "LOG"
+                    },
+                    {
+                        "uuid": "47ad1f6e7a474416be783b25d4112eaf",
+                        "name": "Zerto: Alertas activas - Warning",
+                        "type": "TRAP",
+                        "key": "zerto.alerts.warning_count",
+                        "history": "7d",
+                        "trends": "90d"
+                    },
+                    {
+                        "uuid": "e8b3f22c3d6a4915b6f5008f24e15991",
+                        "name": "Zerto: VMs con encriptación sospechosa",
+                        "type": "TRAP",
+                        "key": "zerto.encryption.suspected_vms_count",
+                        "history": "7d",
+                        "trends": "90d",
+                        "triggers": [
+                            {
+                                "uuid": "19ae6afbc2824122b4a33844f9ce56dc",
+                                "expression": "last(/Zerto Virtual Manager/zerto.encryption.suspected_vms_count)>0",
+                                "name": "Zerto detectó posible Ransomware/encriptación en una o más VMs",
+                                "status": "DISABLED",
+                                "priority": "DISASTER"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "3e0a8041c61147a99db0631534fc6d54",
+                        "name": "Zerto: Volúmenes con encriptación sospechosa",
+                        "type": "TRAP",
+                        "key": "zerto.encryption.suspected_volumes_count",
+                        "history": "7d",
+                        "trends": "90d",
+                        "triggers": [
+                            {
+                                "uuid": "97d8a7717a4a4191b0472e219956bab0",
+                                "expression": "last(/Zerto Virtual Manager/zerto.encryption.suspected_volumes_count)>0",
+                                "name": "Zerto detectó posible Ransomware/encriptación en uno o más volúmenes",
+                                "status": "DISABLED",
+                                "priority": "DISASTER"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "5c8f1e8b7a764cfead1b5a93d7762cb7",
+                        "name": "Zerto: VPGs con encriptación sospechosa",
+                        "type": "TRAP",
+                        "key": "zerto.encryption.suspected_vpgs_count",
+                        "history": "7d",
+                        "trends": "90d",
+                        "triggers": [
+                            {
+                                "uuid": "4600baa9ce4241a6983daea363b97c8f",
+                                "expression": "last(/Zerto Virtual Manager/zerto.encryption.suspected_vpgs_count)>0",
+                                "name": "Zerto detectó posible Ransomware/encriptación en uno o más VPGs",
+                                "status": "DISABLED",
+                                "priority": "DISASTER"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "578757f255e446e283c26a727390e12b",
+                        "name": "Zerto: Eventos totales (conteo)",
+                        "type": "TRAP",
+                        "key": "zerto.events.count",
+                        "history": "7d",
+                        "trends": "90d"
+                    },
+                    {
+                        "uuid": "4cdacc51ee734af5bb358bf978ba73f9",
+                        "name": "Zerto: Eventos nuevos (log, todos)",
+                        "type": "TRAP",
+                        "key": "zerto.events.log",
+                        "history": "30d",
+                        "value_type": "LOG"
+                    },
+                    {
+                        "uuid": "59624fceb586409e8e264f98f6330fd6",
+                        "name": "Zerto: Tareas en curso (conteo)",
+                        "type": "TRAP",
+                        "key": "zerto.tasks.running_count",
+                        "history": "7d",
+                        "trends": "90d"
+                    },
+                    {
+                        "uuid": "a5b1e0c289be4a2b9d3167bb107f1a9d",
+                        "name": "Zerto: Tareas en curso (detalle)",
+                        "type": "TRAP",
+                        "key": "zerto.tasks.running_log",
+                        "history": "7d",
+                        "value_type": "TEXT"
+                    }
+                ],
+                "discovery_rules": [
+                    {
+                        "uuid": "c7cdc5ffea3047ac9b3b8af2a4cbf106",
+                        "name": "Zerto - Discovery Peer sites",
+                        "type": "TRAP",
+                        "key": "zerto.peersite.discovery",
+                        "lifetime": "30d",
+                        "item_prototypes": [
+                            {
+                                "uuid": "45d9193d5f1645b0b4adbf2f0c5c7751",
+                                "name": "Peer site {#PEERSITE}: Bandwidth saliente",
+                                "type": "TRAP",
+                                "key": "zerto.peersite.bandwidth_out[{#PEERSITE}]",
+                                "history": "7d",
+                                "value_type": "FLOAT",
+                                "trends": "90d",
+                                "units": "Mbps",
+                                "tags": [
+                                    {
+                                        "tag": "peersite",
+                                        "value": "{#PEERSITE}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "16b0e35024e2489f814baa715e634452",
+                                "name": "Peer site {#PEERSITE}: Throughput entrante",
+                                "type": "TRAP",
+                                "key": "zerto.peersite.throughput_in[{#PEERSITE}]",
+                                "history": "7d",
+                                "value_type": "FLOAT",
+                                "trends": "90d",
+                                "units": "Mbps",
+                                "tags": [
+                                    {
+                                        "tag": "peersite",
+                                        "value": "{#PEERSITE}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "b6993b07bd654f9bb0c81037ccc6703c",
+                        "name": "Zerto - Discovery VMs protegidas",
+                        "type": "TRAP",
+                        "key": "zerto.vm.discovery",
+                        "lifetime": "30d",
+                        "item_prototypes": [
+                            {
+                                "uuid": "aee50ba897524e4bb807bc973e848072",
+                                "name": "VM {#VMNAME}: Agente instalado",
+                                "type": "TRAP",
+                                "key": "zerto.vm.agent[{#VMID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vm",
+                                        "value": "{#VMNAME}"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPG}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "8250e41a02f84996906df884b9284b29",
+                                "name": "VM {#VMNAME}: FLR habilitado",
+                                "type": "TRAP",
+                                "key": "zerto.vm.flr[{#VMID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vm",
+                                        "value": "{#VMNAME}"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPG}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "e5a473b633ed43d3bffe3f152a384d13",
+                                "name": "VM {#VMNAME}: IOPS",
+                                "type": "TRAP",
+                                "key": "zerto.vm.iops[{#VMID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vm",
+                                        "value": "{#VMNAME}"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPG}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "9a5ed618cf884fb7b3afac18917c511b",
+                                "name": "VM {#VMNAME}: Journal usado",
+                                "type": "TRAP",
+                                "key": "zerto.vm.journal[{#VMID}]",
+                                "history": "7d",
+                                "value_type": "FLOAT",
+                                "trends": "90d",
+                                "units": "MB",
+                                "tags": [
+                                    {
+                                        "tag": "vm",
+                                        "value": "{#VMNAME}"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPG}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "b11dc6cf4945426aa26d8b451453348b",
+                                "name": "VM {#VMNAME}: Último test failover",
+                                "type": "TRAP",
+                                "key": "zerto.vm.lasttest[{#VMID}]",
+                                "history": "7d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "vm",
+                                        "value": "{#VMNAME}"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPG}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "029ae85509ea410cb8840eb35a89865e",
+                                "name": "VM {#VMNAME}: NICs",
+                                "type": "TRAP",
+                                "key": "zerto.vm.nics[{#VMID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vm",
+                                        "value": "{#VMNAME}"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPG}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "4a3431cb5bf349a2a3a97b3bdc997602",
+                                "name": "VM {#VMNAME}: Host de recuperación",
+                                "type": "TRAP",
+                                "key": "zerto.vm.recoveryhost[{#VMID}]",
+                                "history": "7d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "vm",
+                                        "value": "{#VMNAME}"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPG}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "744d482667364e6f80ae5b8d395243ec",
+                                "name": "VM {#VMNAME}: RPO actual",
+                                "type": "TRAP",
+                                "key": "zerto.vm.rpo[{#VMID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "units": "s",
+                                "tags": [
+                                    {
+                                        "tag": "site",
+                                        "value": "{#TARGETSITE}"
+                                    },
+                                    {
+                                        "tag": "vm",
+                                        "value": "{#VMNAME}"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPG}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "a24f9d16d9e44bd090423759facd0adf",
+                                "name": "VM {#VMNAME}: Sitio origen",
+                                "type": "TRAP",
+                                "key": "zerto.vm.source[{#VMID}]",
+                                "history": "7d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "site",
+                                        "value": "{#TARGETSITE}"
+                                    },
+                                    {
+                                        "tag": "vm",
+                                        "value": "{#VMNAME}"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPG}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "b3b6670dd4634058b136858db999f897",
+                                "name": "VM {#VMNAME}",
+                                "type": "TRAP",
+                                "key": "zerto.vm.status[{#VMID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "valuemap": {
+                                    "name": "Zerto - Estado replicación"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "vm",
+                                        "value": "estado"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPG}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "6b51caa014234c7da5238f38e25e8c92",
+                                        "expression": "last(/Zerto Virtual Manager/zerto.vm.status[{#VMID}])<>1",
+                                        "name": "VM {#VMNAME}: no está cumpliendo SLA de replicación",
+                                        "event_name": "VM {#VMNAME}: no está cumpliendo SLA de replicación está tardando en replicar los cambios de las máquinas virtuales hacia el sitio de destino.",
+                                        "status": "DISABLED",
+                                        "priority": "AVERAGE",
+                                        "tags": [
+                                            {
+                                                "tag": "vm",
+                                                "value": "{#VMNAME}"
+                                            },
+                                            {
+                                                "tag": "vpg",
+                                                "value": "{#VPG}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "0d8237839b0a46f29508e7ae0d04c37d",
+                                "name": "VM {#VMNAME}: Storage provisionado",
+                                "type": "TRAP",
+                                "key": "zerto.vm.storage.prov[{#VMID}]",
+                                "history": "7d",
+                                "value_type": "FLOAT",
+                                "trends": "90d",
+                                "units": "B",
+                                "preprocessing": [
+                                    {
+                                        "type": "MULTIPLIER",
+                                        "parameters": [
+                                            "1048576"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "vm",
+                                        "value": "{#VMNAME}"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPG}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "9a5013fe52844ba1a61e655970db4719",
+                                "name": "VM {#VMNAME}: Storage usado",
+                                "type": "TRAP",
+                                "key": "zerto.vm.storage.used[{#VMID}]",
+                                "history": "7d",
+                                "value_type": "FLOAT",
+                                "trends": "90d",
+                                "units": "B",
+                                "preprocessing": [
+                                    {
+                                        "type": "MULTIPLIER",
+                                        "parameters": [
+                                            "1048576"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "vm",
+                                        "value": "{#VMNAME}"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPG}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "d807d900843d482390638c77a8647106",
+                                "name": "VM {#VMNAME}",
+                                "type": "TRAP",
+                                "key": "zerto.vm.substatus[{#VMID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "valuemap": {
+                                    "name": "Zerto - Sub-estado replicación"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "vm",
+                                        "value": "sub-estado"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPG}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "35dfa4b0513042258da51489e09ac0b9",
+                                        "expression": "last(/Zerto Virtual Manager/zerto.vm.substatus[{#VMID}])=42",
+                                        "name": "VM {#VMNAME}: posible actividad de Ransomware detectada por Zerto",
+                                        "status": "DISABLED",
+                                        "priority": "DISASTER",
+                                        "tags": [
+                                            {
+                                                "tag": "vm",
+                                                "value": "{#VMNAME}"
+                                            },
+                                            {
+                                                "tag": "vpg",
+                                                "value": "{#VPG}"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "4baffd3ba20c4d8abdfa4c4fbb364997",
+                                        "expression": "(last(/Zerto Virtual Manager/zerto.vm.substatus[{#VMID}])=7 or last(/Zerto Virtual Manager/zerto.vm.substatus[{#VMID}])=8 or last(/Zerto Virtual Manager/zerto.vm.substatus[{#VMID}])=10 or last(/Zerto Virtual Manager/zerto.vm.substatus[{#VMID}])=24 or last(/Zerto Virtual Manager/zerto.vm.substatus[{#VMID}])=26 or last(/Zerto Virtual Manager/zerto.vm.substatus[{#VMID}])=27 or last(/Zerto Virtual Manager/zerto.vm.substatus[{#VMID}])=30 or last(/Zerto Virtual Manager/zerto.vm.substatus[{#VMID}])=31 or last(/Zerto Virtual Manager/zerto.vm.substatus[{#VMID}])=32 or last(/Zerto Virtual Manager/zerto.vm.substatus[{#VMID}])=33 or last(/Zerto Virtual Manager/zerto.vm.substatus[{#VMID}])=35 or last(/Zerto Virtual Manager/zerto.vm.substatus[{#VMID}])=37 or last(/Zerto Virtual Manager/zerto.vm.substatus[{#VMID}])=38)",
+                                        "name": "VM {#VMNAME}: sub-estado crítico de replicación",
+                                        "status": "DISABLED",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "vm",
+                                                "value": "{#VMNAME}"
+                                            },
+                                            {
+                                                "tag": "vpg",
+                                                "value": "{#VPG}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "96d1564457064f35a7352068e1d6c366",
+                                "name": "VM {#VMNAME}: Sitio destino",
+                                "type": "TRAP",
+                                "key": "zerto.vm.target[{#VMID}]",
+                                "history": "7d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "site",
+                                        "value": "{#TARGETSITE}"
+                                    },
+                                    {
+                                        "tag": "vm",
+                                        "value": "{#VMNAME}"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPG}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "33d2d05beece459a9e22e6d9e64eb8f9",
+                                "name": "VM {#VMNAME}: Throughput",
+                                "type": "TRAP",
+                                "key": "zerto.vm.throughput[{#VMID}]",
+                                "history": "7d",
+                                "value_type": "FLOAT",
+                                "trends": "90d",
+                                "units": "MBps",
+                                "tags": [
+                                    {
+                                        "tag": "vm",
+                                        "value": "{#VMNAME}"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPG}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "6fe15520828d4a47a29cf5de08d9a673",
+                                "name": "VM {#VMNAME}: Volúmenes",
+                                "type": "TRAP",
+                                "key": "zerto.vm.volumes[{#VMID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vm",
+                                        "value": "{#VMNAME}"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPG}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "dd59bc0812df4667a59b41133762cc72",
+                                "name": "VM {#VMNAME}: VPG asociado",
+                                "type": "TRAP",
+                                "key": "zerto.vm.vpg[{#VMID}]",
+                                "history": "7d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "site",
+                                        "value": "{#TARGETSITE}"
+                                    },
+                                    {
+                                        "tag": "vm",
+                                        "value": "{#VMNAME}"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPG}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "6e1f209ce6e54b0aa4a468d0ad3bf480",
+                        "name": "Zerto - Discovery VPGs",
+                        "type": "TRAP",
+                        "key": "zerto.vpg.discovery",
+                        "lifetime": "30d",
+                        "item_prototypes": [
+                            {
+                                "uuid": "f687d53388af499e89dc625627a0327a",
+                                "name": "VPG {#VPGNAME}: alarmas activas de Zerto (código real)",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.active_alerts[{#VPGID}]",
+                                "history": "30d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "4d8e45267f674a4b95a16d03526c1b36",
+                                "name": "VPG {#VPGNAME}: Estado de alerta",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.alert[{#VPGID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "3e0caddf71c144c2b5affa484f59ed9d",
+                                "name": "VPG {#VPGNAME}: Backup habilitado",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.backup_enabled[{#VPGID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "1b745881dad042eb9a42d2d3d7f95d48",
+                                "name": "VPG {#VPGNAME}: Antigüedad del checkpoint más reciente",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.checkpoint.latest_age[{#VPGID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "units": "s",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "41d5ed12922a4436a4ed8b3e18c42db4",
+                                        "expression": "last(/Zerto Virtual Manager/zerto.vpg.checkpoint.latest_age[{#VPGID}])>{$ZERTO.CHECKPOINT.CRIT}",
+                                        "name": "VPG {#VPGNAME}: sin checkpoint reciente",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "vpg",
+                                                "value": "{#VPGNAME}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "0bc8055b09164ac1b2b5ce9819ef1bf4",
+                                "name": "VPG {#VPGNAME}: Checkpoint más reciente (fecha)",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.checkpoint.latest_ts[{#VPGID}]",
+                                "history": "7d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "29ddaaeb914b436ab3bc97dc37724d6b",
+                                "name": "VPG {#VPGNAME}: Antigüedad del checkpoint más antiguo",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.checkpoint.oldest_age[{#VPGID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "units": "s",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "2e77200688ef4c08b733165508eddfc0",
+                                "name": "VPG {#VPGNAME}: Checkpoint más antiguo (fecha)",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.checkpoint.oldest_ts[{#VPGID}]",
+                                "history": "7d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "28c8a50e85c84f7f91719906888d346e",
+                                "name": "VPG {#VPGNAME}: eventos de Zerto (todos)",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.events[{#VPGID}]",
+                                "history": "30d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "02d2848ec5ad418998293671ca27364e",
+                                "name": "VPG {#VPGNAME}: Journal failsafe",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.failsafe_min[{#VPGID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "units": "s",
+                                "preprocessing": [
+                                    {
+                                        "type": "MULTIPLIER",
+                                        "parameters": [
+                                            "60"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "2d25324356ce47b1a7fa3db3024a5f56",
+                                        "expression": "last(/Zerto Virtual Manager/zerto.vpg.failsafe_min[{#VPGID}])<21600",
+                                        "name": "VPG {#VPGNAME}: Tiempo de retenciondegradada < 6 Horas Ingresar a la consola de Zerto Analytics / ZVM verificar y notificar a cliente",
+                                        "status": "DISABLED",
+                                        "discover": "NO_DISCOVER",
+                                        "priority": "HIGH",
+                                        "description": "1 Día = 86400\n18 Horas = 64800\n6 Horas = 21600\n1 Hora = 3600"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "33146dfa1de5425d8474569f14dbadc0",
+                                "name": "VPG {#VPGNAME}: Journal histórico",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.history_min[{#VPGID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "units": "s",
+                                "preprocessing": [
+                                    {
+                                        "type": "MULTIPLIER",
+                                        "parameters": [
+                                            "60"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "c7c43c1620b8430bb242ff457b8dff49",
+                                "name": "VPG {#VPGNAME}: IOPS",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.iops[{#VPGID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "3d156fc500db4d039e3ca87c019c2951",
+                                "name": "VPG {#VPGNAME}: Último test failover",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.lasttest[{#VPGID}]",
+                                "history": "7d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "74185a55c3f3431bb68b343dc0f18a58",
+                                "name": "VPG {#VPGNAME}: fecha de la última recuperación",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.last_rto_date[{#VPGID}]",
+                                "history": "90d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "f5e2824bf90841ca825df1596c9d8233",
+                                "name": "VPG {#VPGNAME}: RTO de la última recuperación (segundos)",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.last_rto_seconds[{#VPGID}]",
+                                "history": "90d",
+                                "value_type": "FLOAT",
+                                "units": "s",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "0fe00d43d1344c3f8e55cdbb027ec194",
+                                "name": "VPG {#VPGNAME}: tipo de la última recuperación",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.last_rto_type[{#VPGID}]",
+                                "history": "90d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "4dc5db3c2b004dd4ab6ea468e747532a",
+                                "name": "VPG {#VPGNAME}: VMs no encontradas",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.missing_vms[{#VPGID}]",
+                                "history": "7d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "a384a5888a2a4211b02e5cd9acf4990a",
+                                        "expression": "length(last(/Zerto Virtual Manager/zerto.vpg.missing_vms[{#VPGID}]))>0",
+                                        "name": "VPG {#VPGNAME}: tiene VM(s) que ya no existen en el inventario",
+                                        "event_name": "VPG {#VPGNAME} tiene VM(s) que Zerto ya no encuentra: {ITEM.LASTVALUE1}",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "vpg",
+                                                "value": "{#VPGNAME}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "95f8f29341ff4bf0a62a56534de44648",
+                                "name": "VPG {#VPGNAME}: RPO actual",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.rpo[{#VPGID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "units": "s",
+                                "tags": [
+                                    {
+                                        "tag": "site",
+                                        "value": "{#TARGETSITE}"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "6bc896cc192f4528a743566d9e4b0206",
+                                        "expression": "last(/Zerto Virtual Manager/zerto.vpg.rpo[{#VPGID}])>{$ZERTO.RPO.CRIT}",
+                                        "name": "VPG {#VPGNAME}: RPO por encima del umbral crítico",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "vpg",
+                                                "value": "{#VPGNAME}"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "f20331e6e6714a558be4502cd84cbdd9",
+                                        "expression": "last(/Zerto Virtual Manager/zerto.vpg.rpo[{#VPGID}])>{$ZERTO.RPO.WARN}",
+                                        "name": "VPG {#VPGNAME}: RPO por encima del umbral de warning",
+                                        "priority": "WARNING",
+                                        "tags": [
+                                            {
+                                                "tag": "vpg",
+                                                "value": "{#VPGNAME}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "087835af78394202ade761de0e4d7269",
+                                "name": "VPG {#VPGNAME}: RPO configurado",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.rpo_conf[{#VPGID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "06992d60bf534521bfbad832577f61dd",
+                                "name": "VPG {#VPGNAME}: Test de failover en curso",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.running_failover_test[{#VPGID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "e636a3bb7cfd45c4b6fafc4529702fc6",
+                                "name": "VPG {#VPGNAME}: Sitio origen",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.source[{#VPGID}]",
+                                "history": "90d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "site",
+                                        "value": "{#TARGETSITE}"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "5353d7487fbc48d387bcdd55f3928035",
+                                "name": "VPG {#VPGNAME}",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.status[{#VPGID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "valuemap": {
+                                    "name": "Zerto - Estado replicación"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "estado"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "1dc2857f211c4d2eaefaaac894a76882",
+                                        "expression": "last(/Zerto Virtual Manager/zerto.vpg.status[{#VPGID}])<>1",
+                                        "name": "VPG {#VPGNAME}: no está cumpliendo SLA de replicación",
+                                        "event_name": "VPG {#VPGNAME}: Zerto marca esta VPG como no saludable (indicador general de estado, no es la métrica de RPO). Motivo reportado por Zerto: {ITEM.LASTVALUE1}.",
+                                        "priority": "AVERAGE",
+                                        "dependencies": [
+                                            {
+                                                "name": "VPG {#VPGNAME}: posible actividad de Ransomware detectada por Zerto",
+                                                "expression": "last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=42"
+                                            },
+                                            {
+                                                "name": "VPG {#VPGNAME}: sub-estado crítico de replicación",
+                                                "expression": "(last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=7 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=8 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=10 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=24 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=26 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=27 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=30 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=31 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=32 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=33 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=35 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=37 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=38)"
+                                            },
+                                            {
+                                                "name": "VPG {#VPGNAME}: tiene VM(s) que ya no existen en el inventario",
+                                                "expression": "length(last(/Zerto Virtual Manager/zerto.vpg.missing_vms[{#VPGID}]))>0"
+                                            }
+                                        ],
+                                        "tags": [
+                                            {
+                                                "tag": "vpg",
+                                                "value": "{#VPGNAME}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "e97380c86e5d45a1be8bcdb09e84cec0",
+                                "name": "VPG {#VPGNAME}: Estado de replicación (texto)",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.status_desc[{#VPGID}]",
+                                "history": "90d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "934dffb41adf4d7f9346df52408ed8c4",
+                                "name": "VPG {#VPGNAME}: Storage provisionado",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.storage.prov[{#VPGID}]",
+                                "history": "7d",
+                                "value_type": "FLOAT",
+                                "trends": "90d",
+                                "units": "MB",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "b98ae68c00ad4aff8831ea00430e1cf2",
+                                "name": "VPG {#VPGNAME}: Storage usado",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.storage.used[{#VPGID}]",
+                                "history": "7d",
+                                "value_type": "FLOAT",
+                                "trends": "90d",
+                                "units": "MB",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "93026344812145498570d26975c8c5b8",
+                                "name": "VPG {#VPGNAME}",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.substatus[{#VPGID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "valuemap": {
+                                    "name": "Zerto - Sub-estado replicación"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "sub-estado"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "7f347aae46d94869b65d5b88b81e81ba",
+                                        "expression": "last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=42",
+                                        "name": "VPG {#VPGNAME}: posible actividad de Ransomware detectada por Zerto",
+                                        "event_name": "VPG {#VPGNAME}: posible actividad de Ransomware detectada por Zerto. Código Zerto: {ITEM.LASTVALUE1}.",
+                                        "priority": "DISASTER",
+                                        "tags": [
+                                            {
+                                                "tag": "vpg",
+                                                "value": "{#VPGNAME}"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "e668bdedd4964a40af81aad1225deba4",
+                                        "expression": "(last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=7 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=8 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=10 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=24 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=26 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=27 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=30 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=31 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=32 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=33 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=35 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=37 or last(/Zerto Virtual Manager/zerto.vpg.substatus[{#VPGID}])=38)",
+                                        "name": "VPG {#VPGNAME}: sub-estado crítico de replicación",
+                                        "event_name": "VPG {#VPGNAME}: sub-estado crítico de replicación. Código Zerto: {ITEM.LASTVALUE1}.",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "vpg",
+                                                "value": "{#VPGNAME}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "eeb0d7857b054719983423bede6050ef",
+                                "name": "VPG {#VPGNAME}: Sub-estado de replicación (texto)",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.substatus_desc[{#VPGID}]",
+                                "history": "90d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "5032302cb7174c6fbdb6ab639c50a0dd",
+                                "name": "VPG {#VPGNAME}: nivel de sospecha de encriptación (0-2)",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.suspected_encryption_level[{#VPGID}]",
+                                "history": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "e5ac3065d4ed41fe939e2b620d2a61da",
+                                "name": "VPG {#VPGNAME}: VM(s) con sospecha de encriptación anómala",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.suspected_encryption_vms[{#VPGID}]",
+                                "history": "90d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "ff62665b70d749a6871456b56e707faa",
+                                        "expression": "length(last(/Zerto Virtual Manager/zerto.vpg.suspected_encryption_vms[{#VPGID}]))>0",
+                                        "name": "VPG {#VPGNAME}: posible actividad de encriptación anómala (ENC0001)",
+                                        "event_name": "VPG {#VPGNAME} tiene VM(s) con sospecha de encriptación/ransomware: {ITEM.LASTVALUE1}",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "scope",
+                                                "value": "encryption-detection"
+                                            },
+                                            {
+                                                "tag": "vpg",
+                                                "value": "{#VPGNAME}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "4c05a2f2fe014a26b1b10801d2393ea1",
+                                "name": "VPG {#VPGNAME}: Sitio destino",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.target[{#VPGID}]",
+                                "history": "90d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "site",
+                                        "value": "{#TARGETSITE}"
+                                    },
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "03a43ebebff54eba80154e5825f2b1e9",
+                                "name": "VPG {#VPGNAME}: Throughput",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.throughput[{#VPGID}]",
+                                "history": "7d",
+                                "value_type": "FLOAT",
+                                "trends": "90d",
+                                "units": "MBps",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "67011d1df0ca4047acb11785fc70d4ad",
+                                "name": "VPG {#VPGNAME}: Cantidad de VMs",
+                                "type": "TRAP",
+                                "key": "zerto.vpg.vms[{#VPGID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vpg",
+                                        "value": "{#VPGNAME}"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "f1ff18327e4d4642ab6e62e4a7945dd5",
+                        "name": "Zerto - Discovery VRAs",
+                        "type": "TRAP",
+                        "key": "zerto.vra.discovery",
+                        "lifetime": "30d",
+                        "item_prototypes": [
+                            {
+                                "uuid": "f8f5983ba7944c438a72a6774bac60ca",
+                                "name": "VRA {#VRANAME}: Estado de alertas",
+                                "type": "TRAP",
+                                "key": "zerto.vra.alerts_status[{#VRAID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vra",
+                                        "value": "{#VRANAME}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "5c49019c3dae4b75bafffad739f6fe25",
+                                        "expression": "last(/Zerto Virtual Manager/zerto.vra.alerts_status[{#VRAID}])<>0",
+                                        "name": "VRA {#VRANAME}: tiene alertas activas",
+                                        "priority": "WARNING",
+                                        "tags": [
+                                            {
+                                                "tag": "vra",
+                                                "value": "{#VRANAME}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "60063552c0b9475c8924941a7b6373e3",
+                                "name": "VRA {#VRANAME}: CPUs asignadas",
+                                "type": "TRAP",
+                                "key": "zerto.vra.cpus[{#VRAID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vra",
+                                        "value": "{#VRANAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "829368cce1df42bcbbef2a5d0b0b18b8",
+                                "name": "VRA {#VRANAME}: Datastore",
+                                "type": "TRAP",
+                                "key": "zerto.vra.datastore[{#VRAID}]",
+                                "history": "7d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "vra",
+                                        "value": "{#VRANAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "9836457a428a46ed95e04113e10fe72f",
+                                "name": "VRA {#VRANAME}: Host ESXi",
+                                "type": "TRAP",
+                                "key": "zerto.vra.host[{#VRAID}]",
+                                "history": "7d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "vra",
+                                        "value": "{#VRANAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "5c57126c982649d8b870369e3ce71ef3",
+                                "name": "VRA {#VRANAME}: IP",
+                                "type": "TRAP",
+                                "key": "zerto.vra.ip[{#VRAID}]",
+                                "history": "7d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "vra",
+                                        "value": "{#VRANAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "3e6fa54823084b9897d22a0ce6be0c40",
+                                "name": "VRA {#VRANAME}: Entrada huérfana (ghost)",
+                                "type": "TRAP",
+                                "key": "zerto.vra.is_ghost[{#VRAID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vra",
+                                        "value": "{#VRANAME}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "33c66c3dd79d458680f13685e4bd6067",
+                                        "expression": "last(/Zerto Virtual Manager/zerto.vra.is_ghost[{#VRAID}])=1",
+                                        "name": "VRA {#VRANAME}: entrada huérfana (ghost) — revisar en la consola de Zerto",
+                                        "priority": "WARNING",
+                                        "tags": [
+                                            {
+                                                "tag": "vra",
+                                                "value": "{#VRANAME}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "b55e89585be241b686702249b46a7d7c",
+                                "name": "VRA {#VRANAME}: Memoria asignada",
+                                "type": "TRAP",
+                                "key": "zerto.vra.memory_gb[{#VRAID}]",
+                                "history": "7d",
+                                "value_type": "FLOAT",
+                                "trends": "90d",
+                                "units": "GB",
+                                "tags": [
+                                    {
+                                        "tag": "vra",
+                                        "value": "{#VRANAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "89864e4939284f6d9dd3070fd5d04431",
+                                "name": "VRA {#VRANAME}: Progreso",
+                                "type": "TRAP",
+                                "key": "zerto.vra.progress[{#VRAID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "units": "%",
+                                "tags": [
+                                    {
+                                        "tag": "vra",
+                                        "value": "{#VRANAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "9cde163933c44c12a8c512b4636f90a1",
+                                "name": "VRA {#VRANAME}: VMs protegidas por este VRA",
+                                "type": "TRAP",
+                                "key": "zerto.vra.protected_vms[{#VRAID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vra",
+                                        "value": "{#VRANAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "95110e3e34b8489a8a8dddca85aa6ab9",
+                                "name": "VRA {#VRANAME}: Volúmenes protegidos por este VRA",
+                                "type": "TRAP",
+                                "key": "zerto.vra.protected_volumes[{#VRAID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vra",
+                                        "value": "{#VRANAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "6cdf0d8fa7a34f0ca071af99fd55b70e",
+                                "name": "VRA {#VRANAME}: VPGs protegidos por este VRA",
+                                "type": "TRAP",
+                                "key": "zerto.vra.protected_vpgs[{#VRAID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vra",
+                                        "value": "{#VRANAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "0feb37fbe1cb49adb3508aca3391f1b6",
+                                "name": "VRA {#VRANAME}: VMs en recuperación en este VRA",
+                                "type": "TRAP",
+                                "key": "zerto.vra.recovery_vms[{#VRAID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vra",
+                                        "value": "{#VRANAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "cdd3f6161c5540699b3b6c854a302126",
+                                "name": "VRA {#VRANAME}: Volúmenes en recuperación en este VRA",
+                                "type": "TRAP",
+                                "key": "zerto.vra.recovery_volumes[{#VRAID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vra",
+                                        "value": "{#VRANAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "76e48c84fa024d609820ad64f7180ec2",
+                                "name": "VRA {#VRANAME}: VPGs en recuperación en este VRA",
+                                "type": "TRAP",
+                                "key": "zerto.vra.recovery_vpgs[{#VRAID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vra",
+                                        "value": "{#VRANAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "faa601571eb749eb9f6984eb998b6206",
+                                "name": "VRA {#VRANAME}: Estado",
+                                "type": "TRAP",
+                                "key": "zerto.vra.status[{#VRAID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "valuemap": {
+                                    "name": "Zerto - Estado VRA"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "vra",
+                                        "value": "{#VRANAME}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "607d81ae5c4e435ba390641988816dd4",
+                                        "expression": "last(/Zerto Virtual Manager/zerto.vra.status[{#VRAID}])<>0",
+                                        "name": "VRA {#VRANAME}: no está en estado Installed",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "vra",
+                                                "value": "{#VRANAME}"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "769ea536205a4d1c8a0d0007b434a25c",
+                                "name": "VRA {#VRANAME}: Estado de actualización",
+                                "type": "TRAP",
+                                "key": "zerto.vra.upgradestatus[{#VRAID}]",
+                                "history": "7d",
+                                "trends": "90d",
+                                "tags": [
+                                    {
+                                        "tag": "vra",
+                                        "value": "{#VRANAME}"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "e18f6ce652ca4d9aa3dd3bcfa5f037e1",
+                                "name": "VRA {#VRANAME}: Versión",
+                                "type": "TRAP",
+                                "key": "zerto.vra.version[{#VRAID}]",
+                                "history": "7d",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "vra",
+                                        "value": "{#VRANAME}"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "macros": [
+                    {
+                        "macro": "{$ZERTO.CHECKPOINT.CRIT}",
+                        "value": "7200",
+                        "description": "Antigüedad máxima aceptable del checkpoint más reciente de un VPG, en segundos (2 horas por defecto)"
+                    },
+                    {
+                        "macro": "{$ZERTO.RPO.CRIT}",
+                        "value": "3600",
+                        "description": "Umbral crítico de RPO en segundos (1 hora por defecto)"
+                    },
+                    {
+                        "macro": "{$ZERTO.RPO.WARN}",
+                        "value": "900",
+                        "description": "Umbral de warning de RPO en segundos (15 min por defecto)"
+                    }
+                ],
+                "valuemaps": [
+                    {
+                        "uuid": "e5d00b8ac216472fb790e3def42c35a5",
+                        "name": "Zerto - Estado replicación",
+                        "mappings": [
+                            {
+                                "value": "0",
+                                "newvalue": "Initializing"
+                            },
+                            {
+                                "value": "1",
+                                "newvalue": "MeetingSLA"
+                            },
+                            {
+                                "value": "2",
+                                "newvalue": "NotMeetingSLA"
+                            },
+                            {
+                                "value": "3",
+                                "newvalue": "RpoNotMeetingSLA"
+                            },
+                            {
+                                "value": "4",
+                                "newvalue": "HistoryNotMeetingSLA"
+                            },
+                            {
+                                "value": "5",
+                                "newvalue": "FailingOver"
+                            },
+                            {
+                                "value": "6",
+                                "newvalue": "Moving"
+                            },
+                            {
+                                "value": "7",
+                                "newvalue": "Deleting"
+                            },
+                            {
+                                "value": "8",
+                                "newvalue": "Recovered"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "b3ec1d74378d458681112cd2343c665b",
+                        "name": "Zerto - Estado VRA",
+                        "mappings": [
+                            {
+                                "value": "0",
+                                "newvalue": "Installed"
+                            },
+                            {
+                                "value": "1",
+                                "newvalue": "UnsupportedEsxVersion"
+                            },
+                            {
+                                "value": "2",
+                                "newvalue": "NotInstalled"
+                            },
+                            {
+                                "value": "3",
+                                "newvalue": "Installing"
+                            },
+                            {
+                                "value": "4",
+                                "newvalue": "Removing"
+                            },
+                            {
+                                "value": "5",
+                                "newvalue": "InstallationError"
+                            },
+                            {
+                                "value": "6",
+                                "newvalue": "HostPasswordChanged"
+                            },
+                            {
+                                "value": "7",
+                                "newvalue": "UpdatingIpSettings"
+                            },
+                            {
+                                "value": "8",
+                                "newvalue": "DuringChangeHost"
+                            },
+                            {
+                                "value": "9",
+                                "newvalue": "HostInMaintenanceMode"
+                            },
+                            {
+                                "value": "10",
+                                "newvalue": "HostEnteringMaintenanceMode"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "f9752de0be8e4f2e90232f5dc43dc57f",
+                        "name": "Zerto - Sub-estado replicación",
+                        "mappings": [
+                            {
+                                "value": "0",
+                                "newvalue": "None"
+                            },
+                            {
+                                "value": "1",
+                                "newvalue": "InitialSync"
+                            },
+                            {
+                                "value": "2",
+                                "newvalue": "Creating"
+                            },
+                            {
+                                "value": "3",
+                                "newvalue": "VolumeInitialSync"
+                            },
+                            {
+                                "value": "4",
+                                "newvalue": "Sync"
+                            },
+                            {
+                                "value": "5",
+                                "newvalue": "RecoveryPossible"
+                            },
+                            {
+                                "value": "6",
+                                "newvalue": "DeltaSync"
+                            },
+                            {
+                                "value": "7",
+                                "newvalue": "NeedsConfiguration"
+                            },
+                            {
+                                "value": "8",
+                                "newvalue": "Error"
+                            },
+                            {
+                                "value": "9",
+                                "newvalue": "EmptyProtectionGroup"
+                            },
+                            {
+                                "value": "10",
+                                "newvalue": "DisconnectedFromPeerNoRecoveryPoints"
+                            },
+                            {
+                                "value": "11",
+                                "newvalue": "FullSync"
+                            },
+                            {
+                                "value": "12",
+                                "newvalue": "VolumeDeltaSync"
+                            },
+                            {
+                                "value": "13",
+                                "newvalue": "VolumeFullSync"
+                            },
+                            {
+                                "value": "14",
+                                "newvalue": "FailingOverCommitting"
+                            },
+                            {
+                                "value": "15",
+                                "newvalue": "FailingOverBeforeCommit"
+                            },
+                            {
+                                "value": "16",
+                                "newvalue": "FailingOverRollingBack"
+                            },
+                            {
+                                "value": "17",
+                                "newvalue": "Promoting"
+                            },
+                            {
+                                "value": "18",
+                                "newvalue": "MovingCommitting"
+                            },
+                            {
+                                "value": "19",
+                                "newvalue": "MovingBeforeCommit"
+                            },
+                            {
+                                "value": "20",
+                                "newvalue": "MovingRollingBack"
+                            },
+                            {
+                                "value": "21",
+                                "newvalue": "Deleting"
+                            },
+                            {
+                                "value": "22",
+                                "newvalue": "PendingRemove"
+                            },
+                            {
+                                "value": "23",
+                                "newvalue": "BitmapSync"
+                            },
+                            {
+                                "value": "24",
+                                "newvalue": "DisconnectedFromPeer"
+                            },
+                            {
+                                "value": "25",
+                                "newvalue": "ReplicationPausedUserInitiated"
+                            },
+                            {
+                                "value": "26",
+                                "newvalue": "ReplicationPausedSystemInitiated"
+                            },
+                            {
+                                "value": "27",
+                                "newvalue": "RecoveryStorageProfileError"
+                            },
+                            {
+                                "value": "28",
+                                "newvalue": "Backup"
+                            },
+                            {
+                                "value": "29",
+                                "newvalue": "RollingBack"
+                            },
+                            {
+                                "value": "30",
+                                "newvalue": "RecoveryStorageError"
+                            },
+                            {
+                                "value": "31",
+                                "newvalue": "JournalStorageError"
+                            },
+                            {
+                                "value": "32",
+                                "newvalue": "VmNotProtectedError"
+                            },
+                            {
+                                "value": "33",
+                                "newvalue": "JournalOrRecoveryMissingError"
+                            },
+                            {
+                                "value": "34",
+                                "newvalue": "AddedVmsInInitialSync"
+                            },
+                            {
+                                "value": "35",
+                                "newvalue": "ReplicationPausedForMissingVolume"
+                            },
+                            {
+                                "value": "36",
+                                "newvalue": "StoppingFotFailure"
+                            },
+                            {
+                                "value": "37",
+                                "newvalue": "RollingBackFailOverLiveFailure"
+                            },
+                            {
+                                "value": "38",
+                                "newvalue": "RollingBackMoveFailure"
+                            },
+                            {
+                                "value": "39",
+                                "newvalue": "SplitingCommitting"
+                            },
+                            {
+                                "value": "40",
+                                "newvalue": "PreparePreseed"
+                            },
+                            {
+                                "value": "41",
+                                "newvalue": "JournalVmRestore"
+                            },
+                            {
+                                "value": "42",
+                                "newvalue": "Ransomware"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
